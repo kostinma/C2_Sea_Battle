@@ -25,6 +25,31 @@ class Fleet:
         self.V_max = V
         self.all_ships = []
 
+
+    # True if there is at least one ship afloat
+    def still_fighting(self):
+        for a_ship in self.all_ships:
+            if a_ship.is_OK():
+                return True
+        return False
+
+
+    # True if (h, v) belong to any ship
+    def in_any_ship(self, h:int, v:int) -> bool:
+        for a_ship in self.all_ships:
+            if a_ship.in_ship(h, v):
+                return True
+        return False
+
+
+    # True if there is an impact
+    def boom(self, h:int, v:int) -> bool:
+        for a_ship in self.all_ships:
+            if a_ship.boom(h, v):
+                return True
+        return False
+
+
     # Add a ship to the fleet.
     # True if added.
     # False if cannot be added.
@@ -115,6 +140,7 @@ class Fleet:
 
         while True:
             try:
+                comp_fleet.all_ships = []
                 for a_ship in user_fleet.all_ships:
                     L = a_ship.m_d_hor
                     W = a_ship.m_d_ver
@@ -122,7 +148,7 @@ class Fleet:
             except:
                 continue
 
-            break
+            return
 
 
     # Setup fleet either by a default way or custom way.
@@ -164,11 +190,21 @@ class Fleet:
         if config_type.lower() == 'd':
             a_list = [(3,1), (2,1), (2,1), (1,1), (1,1), (1,1), (1,1)]   # (length, width)
             if placement_type.lower() == 'r':
-                for elem in a_list:
-                    L = elem[0]
-                    W = elem[1]
-                    # print(L, W)
-                    self.add_ship_random(length=L, width=W, max_failures=10000)
+
+                while True:
+                    try:
+                        self.all_ships = []
+                        for elem in a_list:
+                            L = elem[0]
+                            W = elem[1]
+                            # print(L, W)
+                            self.add_ship_random(length=L, width=W, max_failures=10000)
+                    except:
+                        # print("Except")
+                        continue
+
+                    break
+
             elif placement_type.lower() == 'h':
                 for elem in a_list:
                     L = elem[0]

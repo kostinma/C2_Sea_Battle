@@ -78,6 +78,16 @@ class Ship:
             return False
 
 
+    # True if the point (h, v) is in the ship.
+    def in_ship(self, h:int, v:int) -> bool:
+        # (h, v) - coordinates
+        if      (self.m_hor_0 <= h < self.m_hor_0 + self.m_d_hor) and \
+                (self.m_ver_0 <= v < self.m_ver_0 + self.m_d_ver):
+            return True
+        else:
+            return False
+
+
     # True if the two ships are too close to each other.
     # One ship cannot be in the wake of the other, that is
     # min separation is one square.
